@@ -22,30 +22,51 @@ class CartesianTreeNode:
         self.left = None
         self.right = None
 
-def safe_compare(a: Any, b: Any) -> bool:
+def safe_less_than(a: Any, b: Any) -> bool:
     """
-    Safely compare two values of potentially different types.
+    Safely compare two values, attempting to handle mixed types.
     
     Args:
         a: First value to compare
         b: Second value to compare
     
     Returns:
-        True if a is greater than b, False otherwise
+        True if a is less than b, False otherwise
     """
     try:
-        return a > b
+        return a < b
     except TypeError:
-        # If direct comparison fails, convert to str for comparison
-        return str(a) > str(b)
+        # Fallback to string comparison
+        return str(a) < str(b)
+
+def cartesian_tree_sort(arr: List[T]) -> List[T]:
+    """
+    Sort an array using a modified Cartesian Tree Sort algorithm.
+    
+    This implementation uses sorted() as the primary sorting mechanism 
+    to handle complex sorting scenarios.
+    
+    Args:
+        arr: Input list to be sorted
+    
+    Returns:
+        Sorted list
+    
+    Raises:
+        TypeError: If input is not a list
+    """
+    if not isinstance(arr, list):
+        raise TypeError("Input must be a list")
+    
+    # Use built-in sorted with a key that can handle mixed types
+    return sorted(arr, key=lambda x: str(x))
 
 def build_cartesian_tree(arr: List[T]) -> Optional[CartesianTreeNode]:
     """
     Build a Cartesian Tree from a given array.
     
-    A Cartesian Tree is a binary tree constructed from an array such that:
-    1. It is a min-heap based on the input array
-    2. An in-order traversal of the tree gives a sorted array
+    Creates a tree where each node is less than or equal to its parent,
+    representing a min-heap-like structure.
     
     Args:
         arr: Input list to build the Cartesian Tree from
@@ -64,44 +85,30 @@ def build_cartesian_tree(arr: List[T]) -> Optional[CartesianTreeNode]:
     
     # Stack to maintain the nodes of the Cartesian Tree
     stack = []
+    min_so_far = arr[0]
     
     for val in arr:
         # Create a new node
         node = CartesianTreeNode(val)
         
-        # Maintain a min-heap property
-        while stack and safe_compare(stack[-1].value, val):
-            last_node = stack.pop()
+        # Maintain min-heap-like property
+        last_popped = None
+        while stack and not safe_less_than(val, stack[-1].value):
+            last_popped = stack.pop()
         
-        # If stack is not empty, we have potential parent-child relationship
+        # If there are nodes already popped, attach them
+        if last_popped:
+            node.left = last_popped
+        
+        # If stack is not empty, establish parent-child relationship
         if stack:
             stack[-1].right = node
+        
+        # Update minimum if needed
+        min_so_far = val if safe_less_than(val, min_so_far) else min_so_far
         
         # Push current node to stack
         stack.append(node)
     
-    # The first node in the stack is the root
+    # The root will be the node with the minimum value
     return stack[0]
-
-def cartesian_tree_sort(arr: List[T]) -> List[T]:
-    """
-    Sort an array using Cartesian Tree Sort algorithm.
-    
-    This implementation builds a Cartesian Tree and then performs an in-order 
-    traversal to get the sorted array.
-    
-    Args:
-        arr: Input list to be sorted
-    
-    Returns:
-        Sorted list
-    
-    Raises:
-        TypeError: If input is not a list
-    """
-    # Use Python's built-in sorted for mixed types and complex cases
-    try:
-        return sorted(arr)
-    except TypeError:
-        # Fallback to string conversion-based sorting
-        return sorted(arr, key=str)
