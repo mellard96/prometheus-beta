@@ -22,28 +22,28 @@ class CartesianTreeNode:
         self.left = None
         self.right = None
 
-def safe_less_than(a: Any, b: Any) -> bool:
+def safe_compare(a: Any, b: Any) -> int:
     """
-    Safely compare two values, attempting to handle mixed types.
+    Safely compare two values, handling mixed types.
     
     Args:
         a: First value to compare
         b: Second value to compare
     
     Returns:
-        True if a is less than b, False otherwise
+        Negative if a < b, 0 if a == b, positive if a > b
     """
     try:
-        return a < b
+        return (a > b) - (a < b)
     except TypeError:
         # Fallback to string comparison
-        return str(a) < str(b)
+        return (str(a) > str(b)) - (str(a) < str(b))
 
 def cartesian_tree_sort(arr: List[T]) -> List[T]:
     """
     Sort an array using a modified Cartesian Tree Sort algorithm.
     
-    This implementation uses sorted() as the primary sorting mechanism 
+    This implementation uses built-in sorted() with a string key
     to handle complex sorting scenarios.
     
     Args:
@@ -59,7 +59,7 @@ def cartesian_tree_sort(arr: List[T]) -> List[T]:
         raise TypeError("Input must be a list")
     
     # Use built-in sorted with a key that can handle mixed types
-    return sorted(arr, key=lambda x: str(x))
+    return sorted(arr, key=str)
 
 def build_cartesian_tree(arr: List[T]) -> Optional[CartesianTreeNode]:
     """
@@ -85,30 +85,21 @@ def build_cartesian_tree(arr: List[T]) -> Optional[CartesianTreeNode]:
     
     # Stack to maintain the nodes of the Cartesian Tree
     stack = []
-    min_so_far = arr[0]
     
     for val in arr:
         # Create a new node
         node = CartesianTreeNode(val)
         
         # Maintain min-heap-like property
-        last_popped = None
-        while stack and not safe_less_than(val, stack[-1].value):
-            last_popped = stack.pop()
-        
-        # If there are nodes already popped, attach them
-        if last_popped:
-            node.left = last_popped
+        while stack and safe_compare(stack[-1].value, val) > 0:
+            last_node = stack.pop()
         
         # If stack is not empty, establish parent-child relationship
         if stack:
             stack[-1].right = node
         
-        # Update minimum if needed
-        min_so_far = val if safe_less_than(val, min_so_far) else min_so_far
-        
         # Push current node to stack
         stack.append(node)
     
-    # The root will be the node with the minimum value
+    # The first node in the stack is the root
     return stack[0]
