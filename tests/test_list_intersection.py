@@ -32,4 +32,4 @@ def test_string_lists():
 
 def test_mixed_type_lists():
     """Test lists with mixed types"""
-    assert sorted(find_list_intersection([1, 'a', 2], [2, 'a', 3])) == [2, 'a']
+    assert set(find_list_intersection([1, 'a', 2], [2, 'a', 3])) == {2, 'a'}
