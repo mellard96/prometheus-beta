@@ -11,7 +11,7 @@ def test_kmp_search_basic():
     """Test basic string matching scenarios."""
     assert kmp_search("ABABDABACDABABCABAB", "ABABCABAB") == [10]
     assert kmp_search("AABAACAADAABAABA", "AABA") == [0, 9, 12]
-    assert kmp_search("ABXABXABXAB", "ABXAB") == [0, 5]
+    assert kmp_search("ABXABXABXAB", "ABXAB") == [0, 3, 6]
 
 def test_kmp_search_multiple_occurrences():
     """Test scenarios with multiple pattern occurrences."""
