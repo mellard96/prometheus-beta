@@ -1,4 +1,4 @@
-from typing import List, TypeVar, Optional
+from typing import List, TypeVar, Optional, Any
 
 T = TypeVar('T')
 
@@ -45,6 +45,13 @@ def build_cartesian_tree(arr: List[T]) -> Optional[CartesianTreeNode]:
     if not arr:
         return None
     
+    # If the list contains mixed types, convert to strings for comparison
+    def safe_compare(a: Any, b: Any) -> bool:
+        try:
+            return a > b
+        except TypeError:
+            return str(a) > str(b)
+    
     # Stack to maintain the nodes of the Cartesian Tree
     stack = []
     
@@ -52,8 +59,8 @@ def build_cartesian_tree(arr: List[T]) -> Optional[CartesianTreeNode]:
         # Create a new node
         node = CartesianTreeNode(val)
         
-        # Find the last node that is smaller than the current node
-        while stack and stack[-1].value > val:
+        # Find the last node that is greater than the current node
+        while stack and safe_compare(stack[-1].value, val):
             stack.pop()
         
         # If stack is not empty, the top node becomes the parent
