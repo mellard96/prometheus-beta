@@ -1,4 +1,4 @@
-from typing import List, TypeVar, Optional, Any
+from typing import List, TypeVar, Optional, Any, Callable
 
 T = TypeVar('T')
 
@@ -10,15 +10,18 @@ class CartesianTreeNode:
         value: The value stored in the node
         left: Left child node
         right: Right child node
+        original_index: Original index in the input array
     """
-    def __init__(self, value):
+    def __init__(self, value, original_index):
         """
         Initialize a Cartesian Tree Node.
         
         Args:
             value: The value to be stored in the node
+            original_index: Original index of the value in the input array
         """
         self.value = value
+        self.original_index = original_index
         self.left = None
         self.right = None
 
@@ -28,7 +31,7 @@ def build_cartesian_tree(arr: List[T]) -> Optional[CartesianTreeNode]:
     
     A Cartesian Tree is a binary tree constructed from an array such that:
     1. It is a min-heap based on the input array
-    2. An in-order traversal of the tree produces the original array
+    2. An in-order traversal of the tree preserves the original order for equal elements
     
     Args:
         arr: Input list to build the Cartesian Tree from
@@ -45,27 +48,29 @@ def build_cartesian_tree(arr: List[T]) -> Optional[CartesianTreeNode]:
     if not arr:
         return None
     
-    # If the list contains mixed types, convert to strings for comparison
-    def safe_compare(a: Any, b: Any) -> bool:
-        try:
-            return a > b
-        except TypeError:
-            return str(a) > str(b)
+    # Use indexed comparison to maintain original order for equal elements
+    indexed_arr = list(enumerate(arr))
     
     # Stack to maintain the nodes of the Cartesian Tree
     stack = []
     
-    for val in arr:
+    for idx, val in indexed_arr:
         # Create a new node
-        node = CartesianTreeNode(val)
+        node = CartesianTreeNode(val, idx)
         
         # Find the last node that is greater than the current node
-        while stack and safe_compare(stack[-1].value, val):
-            stack.pop()
+        last_popped = None
+        while stack and (stack[-1].value > val or 
+                         (stack[-1].value == val and stack[-1].original_index > idx)):
+            last_popped = stack.pop()
         
         # If stack is not empty, the top node becomes the parent
         if stack:
             stack[-1].right = node
+        
+        # If we popped some nodes, the last one becomes the left child
+        if last_popped:
+            node.left = last_popped
         
         # Push current node to stack
         stack.append(node)
