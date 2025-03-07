@@ -19,10 +19,12 @@ def calculate_standard_deviation(numbers):
         raise ValueError("Cannot calculate standard deviation of an empty list")
     
     # Validate input is numeric
-    try:
-        numeric_numbers = [float(num) for num in numbers]
-    except (TypeError, ValueError):
-        raise TypeError("All elements must be numeric")
+    numeric_numbers = []
+    for num in numbers:
+        # Strictly check for numeric types
+        if not isinstance(num, (int, float)):
+            raise TypeError("All elements must be numeric")
+        numeric_numbers.append(float(num))
     
     # Calculate mean
     mean = sum(numeric_numbers) / len(numeric_numbers)
