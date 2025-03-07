@@ -22,6 +22,10 @@ def shannon_fano_encode(data: Union[str, List[str]]) -> Dict[str, str]:
     if isinstance(data, str):
         data = list(data)
     
+    # Special case for single character
+    if len(set(data)) == 1:
+        return {data[0]: '0'}
+    
     # Count frequency of each symbol
     frequencies = Counter(data)
     
@@ -70,8 +74,17 @@ def shannon_fano_decode(codes: Dict[str, str], encoded_data: str) -> str:
         ValueError: If decoding fails or input is invalid
     """
     # Validate input
-    if not codes or not encoded_data:
-        raise ValueError("Codes and encoded data cannot be empty")
+    if not codes:
+        raise ValueError("Codes cannot be empty")
+    
+    # Special case for single character
+    if len(codes) == 1:
+        symbol = list(codes.keys())[0]
+        return symbol * (len(encoded_data) if encoded_data else 1)
+    
+    # If no encoded data but multiple codes, raise error
+    if not encoded_data:
+        raise ValueError("Encoded data cannot be empty")
     
     # Create reverse mapping
     reverse_codes = {code: symbol for symbol, code in codes.items()}
