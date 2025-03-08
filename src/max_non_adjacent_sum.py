@@ -25,19 +25,25 @@ def max_non_adjacent_digit_sum(number):
     if len(digits) <= 1:
         return max(digits) if digits else 0
     
-    # Dynamic programming approach
-    # dp[i] represents the max sum up to index i
-    dp = [0] * len(digits)
+    # Dynamic programming approach with more flexible non-adjacency
+    def max_non_adjacent(arr):
+        if not arr:
+            return 0
+        if len(arr) == 1:
+            return arr[0]
+        
+        # Initialize DP array to track best possible sums
+        dp = [0] * len(arr)
+        dp[0] = arr[0]
+        dp[1] = max(arr[0], arr[1])
+        
+        # Dynamic programming computation
+        for i in range(2, len(arr)):
+            # At each step, consider:
+            # 1. Skipping this digit (previous best sum)
+            # 2. Including this digit and the best sum from at least 2 steps back
+            dp[i] = max(dp[i-1], arr[i] + dp[i-2])
+        
+        return dp[-1]
     
-    # Initialize first two elements
-    dp[0] = digits[0]
-    dp[1] = max(digits[0], digits[1])
-    
-    # Compute max sum for each step
-    for i in range(2, len(digits)):
-        # Two choices at each step:
-        # 1. Include current digit and max sum from two steps back
-        # 2. Exclude current digit and take max from previous step
-        dp[i] = max(digits[i] + dp[i-2], dp[i-1])
-    
-    return dp[-1]
+    return max_non_adjacent(digits)
