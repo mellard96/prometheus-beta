@@ -27,16 +27,19 @@ def test_partial_match():
 def test_case_sensitivity():
     """Test case sensitivity."""
     assert longest_common_subsequence("Hello", "hello") == ""
+    assert longest_common_subsequence("hello", "HeLLo") == ""
 
 def test_unicode_strings():
     """Test strings with non-ASCII characters."""
-    assert longest_common_subsequence("résumé", "resume") == "eue"
+    # Note: This test may change based on specific normalization requirements
+    assert longest_common_subsequence("résumé", "resume") == "rsum"
 
 def test_long_strings():
     """Test longer strings with multiple common subsequences."""
     str1 = "ABCBDAB"
     str2 = "BDCABA"
-    assert longest_common_subsequence(str1, str2) == "BCBA"
+    result = longest_common_subsequence(str1, str2)
+    assert result in ["BCBA", "BDAB"]  # Could be multiple valid LCS
 
 def test_input_types():
     """Ensure function handles different input types."""
