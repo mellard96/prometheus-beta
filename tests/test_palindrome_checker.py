@@ -38,7 +38,7 @@ def test_edge_cases():
 
 def test_unicode_characters():
     # Basic Unicode palindromes
-    assert is_palindrome("レベル") == True  # 'level' in Japanese
+    assert is_palindrome("上海海上") == True  # 'Shanghai' in Chinese characters
     assert is_palindrome("こんにちは") == False  # 'hello' in Japanese
 
 def test_non_string_input():
