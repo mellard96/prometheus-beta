@@ -1,6 +1,6 @@
 def palindrome_pair(numbers):
     """
-    Determine if there is a pair of numbers in the sorted list 
+    Determine if there is a pair of numbers in the list 
     whose difference is a palindrome.
 
     Args:
@@ -29,11 +29,12 @@ def palindrome_pair(numbers):
         """Check if a number is a palindrome."""
         return str(abs(n)) == str(abs(n))[::-1]
     
-    # Check differences between all pairs of numbers
+    # Create all possible pairs and check their differences
     for i in range(len(numbers)):
         for j in range(i+1, len(numbers)):
-            # Check if the difference is a palindrome
+            # Calculate the difference between the two numbers
             diff = abs(numbers[j] - numbers[i])
+            # Check if the absolute difference is a palindrome
             if is_palindrome(diff):
                 return True
     
