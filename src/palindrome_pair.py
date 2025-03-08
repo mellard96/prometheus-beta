@@ -34,8 +34,8 @@ def palindrome_pair(numbers):
         for j in range(i+1, len(numbers)):
             # Calculate the difference between the two numbers
             diff = abs(numbers[j] - numbers[i])
-            # Check if the absolute difference is a palindrome
-            if is_palindrome(diff):
+            # Check if the absolute difference is a strictly 2-digit palindrome
+            if is_palindrome(diff) and 9 < diff < 100:
                 return True
     
     return False
