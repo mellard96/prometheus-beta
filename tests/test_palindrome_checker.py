@@ -37,12 +37,12 @@ def test_edge_cases():
     assert is_palindrome("123 421") == False
 
 def test_unicode_characters():
-    # Basic Unicode support
-    assert is_palindrome("マダム") == True
-    assert is_palindrome("こんにちは") == False
+    # Basic Unicode palindromes
+    assert is_palindrome("レベル") == True  # 'level' in Japanese
+    assert is_palindrome("こんにちは") == False  # 'hello' in Japanese
 
 def test_non_string_input():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         is_palindrome(12321)
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         is_palindrome(None)
