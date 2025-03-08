@@ -3,15 +3,15 @@ from src.palindrome_pair import palindrome_pair
 
 def test_palindrome_pair_basic_positive():
     """Test basic positive case with palindrome difference."""
-    assert palindrome_pair([10, 20, 30]) == True  # 20 - 10 = 10 (2-digit palindrome)
+    assert palindrome_pair([10, 20, 30]) == True  # 20 - 10 = 10 (palindrome)
 
 def test_palindrome_pair_basic_negative():
     """Test case with no palindrome difference."""
-    assert palindrome_pair([1, 3, 5, 7]) == False
+    assert palindrome_pair([1, 2, 3, 4]) == False
 
 def test_palindrome_pair_exact_palindrome():
     """Test with exactly palindrome difference."""
-    assert palindrome_pair([11, 22]) == True  # 22 - 11 = 11 (2-digit palindrome)
+    assert palindrome_pair([11, 22]) == True  # 22 - 11 = 11 (palindrome)
 
 def test_palindrome_pair_unsorted_input():
     """Test that function works with unsorted input."""
