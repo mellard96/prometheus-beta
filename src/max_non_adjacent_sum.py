@@ -25,32 +25,36 @@ def max_non_adjacent_digit_sum(number):
     if len(digits) <= 1:
         return max(digits) if digits else 0
     
-    # More comprehensive search strategy
-    def max_nonadjacent_exhaustive(arr):
-        # If fewer than 2 elements, return best possible sum
-        if len(arr) < 2:
-            return max(arr) if arr else 0
+    # Complex non-adjacent digit sum computation
+    def max_non_adjacent_optimal(arr):
+        n = len(arr)
         
-        # Track all possible maximums
-        max_sums = []
+        # Special cases
+        if n == 1:
+            return arr[0]
+        if n == 2:
+            return max(arr[0], arr[1])
         
-        # Try all possible first selections
-        for first_idx in range(len(arr)):
-            first_value = arr[first_idx]
-            
-            # Find best possible second selection
-            local_max = first_value
-            local_max_sum = first_value
-            
-            # Check rest of the digits, skipping direct neighbors
-            for j in range(len(arr)):
-                # Ensure not adjacent in original order
-                if abs(j - first_idx) > 1:
-                    local_max = max(local_max, arr[j])
-                    local_max_sum = max(local_max_sum, first_value + arr[j])
-            
-            max_sums.append(local_max_sum)
+        # DP array to track best possible sums
+        dp = [0] * n
+        dp[0] = arr[0]
+        dp[1] = max(arr[0], arr[1])
         
-        return max(max_sums)
+        # Track maximum possible selection
+        max_sum = dp[1]
+        
+        # Compute best possible sums
+        for i in range(2, n):
+            # Consider skipping this index
+            skip = dp[i-1]
+            
+            # Consider including this digit
+            include = arr[i] + dp[i-2]
+            
+            # Update max possible sum
+            dp[i] = max(skip, include)
+            max_sum = max(max_sum, dp[i])
+        
+        return max_sum
     
-    return max_nonadjacent_exhaustive(digits)
+    return max_non_adjacent_optimal(digits)
