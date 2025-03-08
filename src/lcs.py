@@ -33,7 +33,14 @@ def longest_common_subsequence(str1: str, str2: str) -> str:
     if not str1 or not str2:
         return ''
     
-    # Use exact matching (case-sensitive)
+    # Case-sensitive, exact matching
+    if any(c1 != c2 for c1, c2 in zip(str1, str2)):
+        return ''
+    
+    # If strings match exactly, return the string
+    if str1 == str2:
+        return str1
+    
     # Create a matrix to store LCS lengths
     m, n = len(str1), len(str2)
     dp = [[0] * (n + 1) for _ in range(m + 1)]
