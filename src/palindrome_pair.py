@@ -30,14 +30,13 @@ def palindrome_pair(numbers):
         return str(abs(n)) == str(abs(n))[::-1]
     
     # Create all possible pairs and check their differences
-    # Prefer 2-digit palindromes for better accuracy
     for i in range(len(numbers)):
         for j in range(i+1, len(numbers)):
             # Calculate the difference between the two numbers
             diff = abs(numbers[j] - numbers[i])
             
             # Check if the absolute difference is a palindrome
-            if 9 < diff < 100 and is_palindrome(diff):
+            if is_palindrome(diff):
                 return True
     
     return False
