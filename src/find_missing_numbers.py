@@ -34,10 +34,10 @@ def find_missing_numbers(arr):
     # Create a set of the input array for O(1) lookup
     arr_set = set(arr)
     
-    # Find missing numbers
-    missing_numbers = [
+    # Find missing numbers only in the range of the array
+    missing_numbers = sorted([
         num for num in range(min_val, max_val + 1) 
         if num not in arr_set
-    ]
+    ])
     
     return missing_numbers
