@@ -4,7 +4,7 @@ def palindrome_pair(numbers):
     whose difference is a palindrome.
 
     Args:
-        numbers (list): A sorted list of integers.
+        numbers (list): A list of integers.
 
     Returns:
         bool: True if a palindrome difference pair exists, False otherwise.
@@ -25,9 +25,6 @@ def palindrome_pair(numbers):
     if not all(isinstance(num, int) for num in numbers):
         raise ValueError("List must contain only integers")
     
-    # Ensure list is sorted
-    numbers = sorted(numbers)
-    
     def is_palindrome(n):
         """Check if a number is a palindrome."""
         return str(abs(n)) == str(abs(n))[::-1]
@@ -36,7 +33,8 @@ def palindrome_pair(numbers):
     for i in range(len(numbers)):
         for j in range(i+1, len(numbers)):
             # Check if the difference is a palindrome
-            if is_palindrome(numbers[j] - numbers[i]):
+            diff = abs(numbers[j] - numbers[i])
+            if is_palindrome(diff):
                 return True
     
     return False
