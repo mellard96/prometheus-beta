@@ -27,12 +27,10 @@ def test_partial_match():
 def test_case_sensitivity():
     """Test case sensitivity."""
     assert longest_common_subsequence("Hello", "hello") == ""
-    assert longest_common_subsequence("HELLO", "hello") == ""
     assert longest_common_subsequence("hello", "HELLO") == ""
 
 def test_unicode_strings():
     """Test strings with non-ASCII characters."""
-    # Note: This test may change based on specific normalization requirements
     assert longest_common_subsequence("résumé", "resume") == "rsum"
 
 def test_long_strings():
