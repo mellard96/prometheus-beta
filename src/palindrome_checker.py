@@ -1,4 +1,5 @@
 import unicodedata
+import re
 
 def is_palindrome(s: str) -> bool:
     """
@@ -31,11 +32,8 @@ def is_palindrome(s: str) -> bool:
     # Normalize Unicode and remove diacritical marks
     normalized_str = unicodedata.normalize('NFKD', s)
     
-    # Remove non-alphanumeric characters and convert to lowercase
-    cleaned_str = ''.join(
-        char.lower() for char in normalized_str 
-        if unicodedata.category(char)[0] not in ['M', 'P', 'Z']  # Remove marks, punctuation, and separators
-    )
+    # Use regex to remove non-alphanumeric characters and convert to lowercase
+    cleaned_str = re.sub(r'[^\w]', '', normalized_str).lower()
     
     # Check if the cleaned string is equal to its reverse
     return cleaned_str == cleaned_str[::-1]
