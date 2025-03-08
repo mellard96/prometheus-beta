@@ -12,9 +12,9 @@ def test_no_missing_numbers():
     assert find_missing_numbers(arr) == []
 
 def test_sparse_array():
-    """Test with a sparse array of numbers."""
+    """Test with a sparse array of numbers, finding consecutively missing numbers."""
     arr = [10, 20, 30, 50]
-    assert find_missing_numbers(arr) == [40]
+    assert find_missing_numbers(arr) == [11, 12, 13, 14, 15, 16, 17, 18, 19, 40]
 
 def test_negative_numbers():
     """Test with negative numbers in the array."""
