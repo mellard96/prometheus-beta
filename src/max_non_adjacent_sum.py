@@ -25,25 +25,32 @@ def max_non_adjacent_digit_sum(number):
     if len(digits) <= 1:
         return max(digits) if digits else 0
     
-    # Dynamic programming approach with more flexible non-adjacency
-    def max_non_adjacent(arr):
-        if not arr:
-            return 0
-        if len(arr) == 1:
-            return arr[0]
+    # More comprehensive search strategy
+    def max_nonadjacent_exhaustive(arr):
+        # If fewer than 2 elements, return best possible sum
+        if len(arr) < 2:
+            return max(arr) if arr else 0
         
-        # Initialize DP array to track best possible sums
-        dp = [0] * len(arr)
-        dp[0] = arr[0]
-        dp[1] = max(arr[0], arr[1])
+        # Track all possible maximums
+        max_sums = []
         
-        # Dynamic programming computation
-        for i in range(2, len(arr)):
-            # At each step, consider:
-            # 1. Skipping this digit (previous best sum)
-            # 2. Including this digit and the best sum from at least 2 steps back
-            dp[i] = max(dp[i-1], arr[i] + dp[i-2])
+        # Try all possible first selections
+        for first_idx in range(len(arr)):
+            first_value = arr[first_idx]
+            
+            # Find best possible second selection
+            local_max = first_value
+            local_max_sum = first_value
+            
+            # Check rest of the digits, skipping direct neighbors
+            for j in range(len(arr)):
+                # Ensure not adjacent in original order
+                if abs(j - first_idx) > 1:
+                    local_max = max(local_max, arr[j])
+                    local_max_sum = max(local_max_sum, first_value + arr[j])
+            
+            max_sums.append(local_max_sum)
         
-        return dp[-1]
+        return max(max_sums)
     
-    return max_non_adjacent(digits)
+    return max_nonadjacent_exhaustive(digits)
