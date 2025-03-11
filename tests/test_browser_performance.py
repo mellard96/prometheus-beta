@@ -11,7 +11,7 @@ class TestBrowserPerformanceLogging:
         self.log_handler = logging.StreamHandler(self.log_capture)
         self.logger = logging.getLogger()
         self.logger.addHandler(self.log_handler)
-        self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(logging.DEBUG)  # Change to DEBUG to capture all levels
 
     def teardown_method(self):
         # Remove log handler
