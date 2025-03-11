@@ -44,8 +44,8 @@ def test_float_inputs():
     capacity = 50.5
     max_value, selected_items = solve_knapsack(weights, values, capacity)
     
-    assert max_value == 160.3
-    assert set(selected_items) == {0, 1}
+    assert max_value == 180.4
+    assert set(selected_items) == {0, 2}
 
 def test_invalid_weight_list():
     """Test with invalid weight list"""
